@@ -1,0 +1,13 @@
+{
+  "xano_api_token": "YOUR_XANO_API_TOKEN",
+  "debug": true,
+  "transport": "stdio",
+  "port": 8765,
+  "comments": [
+    "This is an example configuration file for the Xano MCP server.",
+    "Replace YOUR_XANO_API_TOKEN with your actual Xano API token.",
+    "The debug option enables verbose logging.",
+    "The transport option can be 'stdio' or 'websocket'.",
+    "The port option is only used when transport is set to 'websocket'."
+  ]
+}

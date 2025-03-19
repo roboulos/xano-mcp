@@ -1,0 +1,31 @@
+name: xano-mcp
+version: 1.0.0
+description: Model Context Protocol server for Xano database integration
+
+type: mcp
+
+config:
+  schema:
+    type: object
+    properties:
+      xano_api_token:
+        type: string
+        description: Xano API token for authentication
+      debug:
+        type: boolean
+        description: Enable debug mode for verbose logging
+        default: false
+      transport:
+        type: string
+        description: Transport method (stdio or websocket)
+        enum: [stdio, websocket]
+        default: stdio
+      port:
+        type: integer
+        description: Port for WebSocket server (only used with websocket transport)
+        default: 8765
+    required:
+      - xano_api_token
+
+command: |
+  python -m src.xano_mcp --token $xano_api_token --transport $transport ${debug && "--debug"} ${transport == "websocket" && "--port $port"}
