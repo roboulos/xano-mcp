@@ -1,11 +1,7 @@
-name: xano-mcp
-version: 1.0.0
-description: Model Context Protocol server for Xano database integration
-
-type: mcp
-
-config:
-  schema:
+# Smithery.ai configuration
+startCommand:
+  type: stdio
+  configSchema:
     type: object
     properties:
       xano_api_token:
@@ -26,6 +22,15 @@ config:
         default: 8765
     required:
       - xano_api_token
-
-command: |
-  python -m src.xano_mcp --token $xano_api_token --transport $transport ${debug && "--debug"} ${transport == "websocket" && "--port $port"}
+  commandFunction: |
+    (config) => ({
+      command: "python",
+      args: [
+        "-m", "src.xano_mcp",
+        "--token", config.xano_api_token,
+        "--transport", config.transport || "stdio",
+        ...(config.debug ? ["--debug"] : []),
+        ...(config.transport === "websocket" && config.port ? ["--port", config.port.toString()] : [])
+      ],
+      env: {}
+    })
