@@ -1,4 +1,11 @@
 # Smithery.ai configuration
+name: xano-mcp
+version: 1.0.0
+description: Model Context Protocol server for Xano database integration
+
+build:
+  dockerfile: Dockerfile
+
 startCommand:
   type: stdio
   configSchema:
@@ -11,20 +18,11 @@ startCommand:
         type: boolean
         description: Enable debug mode for verbose logging
         default: false
-      transport:
-        type: string
-        description: Transport method (stdio or websocket)
-        enum: [stdio, websocket]
-        default: stdio
-      port:
-        type: integer
-        description: Port for WebSocket server (only used with websocket transport)
-        default: 8765
     required:
       - xano_api_token
   commandFunction: |-
     (config) => ({
       command: "python",
-      args: ["-m", "src.xano_mcp", "--token", config.xano_api_token, "--transport", config.transport || "stdio", ...(config.debug ? ["--debug"] : []), ...(config.transport === "websocket" && config.port ? ["--port", String(config.port)] : [])],
+      args: ["-m", "src.xano_mcp", "--token", config.xano_api_token, ...(config.debug ? ["--debug"] : [])],
       env: {}
     })
