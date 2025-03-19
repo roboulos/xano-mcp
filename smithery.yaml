@@ -22,15 +22,9 @@ startCommand:
         default: 8765
     required:
       - xano_api_token
-  commandFunction: |
+  commandFunction: |-
     (config) => ({
       command: "python",
-      args: [
-        "-m", "src.xano_mcp",
-        "--token", config.xano_api_token,
-        "--transport", config.transport || "stdio",
-        ...(config.debug ? ["--debug"] : []),
-        ...(config.transport === "websocket" && config.port ? ["--port", config.port.toString()] : [])
-      ],
+      args: ["-m", "src.xano_mcp", "--token", config.xano_api_token, "--transport", config.transport || "stdio", ...(config.debug ? ["--debug"] : []), ...(config.transport === "websocket" && config.port ? ["--port", String(config.port)] : [])],
       env: {}
     })
